@@ -5,12 +5,12 @@ on:
     branches:
       - develop
       - qa
-      - main
+      - master
   pull_request:
     branches:
       - develop
       - qa
-      - main
+      - master
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -66,9 +66,9 @@ jobs:
             --substitutions=_ENV=qa \
             .
 
-  # Job para ambiente PROD (rama main)
+  # Job para ambiente PROD (rama master)
   deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: deploy-qa
     steps:
