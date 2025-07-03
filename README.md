@@ -33,3 +33,4 @@ Creamos un entorno con python 3.7, e instalamos las dependencias necesarias.
 ## Agradecimientos
 
 [Praneeth Kandula](https://medium.com/analytics-vidhya/deploying-streamlit-apps-to-google-app-engine-in-5-simple-steps-5e2e2bd5b172)
+# Trigger CI/CD again after adding logging.viewer role
