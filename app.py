@@ -59,5 +59,17 @@ def main():
         predictS = model_prediction(x_in, model)
         st.success('EL CULTIVO RECOMENDADO ES: {}'.format(predictS[0]).upper())
 
+# Health check endpoint for Cloud Run (Flask only, won't interfere with Streamlit)
+try:
+    app = Flask(__name__)
+    @app.route('/healthz')
+    def healthz():
+        return 'ok', 200
+    @app.route('/hello')
+    def hello():
+        return 'Hello, World!', 200
+except Exception:
+    pass
+
 if __name__ == '__main__':
     main()
