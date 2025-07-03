@@ -1,4 +1,5 @@
 # This is a test comment to trigger the CI/CD pipeline 
+# Another test comment to check sequential pipeline (2025-07-02)
 import numpy as np
 from flask import Flask, request, jsonify, render_template, url_for
 import pickle
