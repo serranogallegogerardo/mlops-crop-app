@@ -1,3 +1,52 @@
+# 🚀 CI/CD Pipeline with Google Cloud Build (English Quick Start)
+
+This project includes a complete CI/CD pipeline with three environments: **DEV**, **QA**, and **PROD**.
+
+## ⚡ How to Run the App Locally
+
+### 1. Run with Docker (Production-like)
+
+Build the Docker image locally:
+```bash
+sudo docker build -t crop-streamlit-app .
+```
+
+Run the app in a Docker container:
+```bash
+sudo docker run -p 8080:8080 -e PORT=8080 crop-streamlit-app
+```
+- Access your app at: [http://localhost:8080](http://localhost:8080)
+- This method replicates the production environment and is ideal for testing how your app will behave in Google Cloud Run.
+
+### 2. Run Natively (Local Development)
+
+You can also run the app directly on your machine, without Docker.
+
+For example, to run both Jupyter Notebook and Streamlit locally:
+```bash
+# Activate your Python environment first, if needed
+source crop-env/bin/activate
+
+# Start Jupyter Notebook
+jupyter notebook
+
+# In another terminal, start Streamlit
+streamlit run app.py
+```
+- This method is useful for rapid development and debugging.
+
+---
+
+## 🚦 How to Test the CI/CD Flow
+
+1. **Push to `develop` branch** → Deploys automatically to DEV environment.
+2. **Push to `qa` branch** → Deploys automatically to QA environment.
+3. **Push to `master` branch** → Deploys automatically to PROD environment.
+
+You can monitor the deployment status in the **Actions** tab of your GitHub repository. Each environment will have its own Google Cloud Run service and URL.
+
+---
+
 # 🚀 CI/CD Pipeline con Google Cloud Build
 
 Este proyecto incluye un pipeline CI/CD completo con tres ambientes: **DEV**, **QA** y **PROD**.
