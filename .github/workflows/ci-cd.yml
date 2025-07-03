@@ -41,7 +41,6 @@ jobs:
         run: |
           gcloud builds submit \
             --config cloudbuild-dev.yaml \
-            --substitutions=_ENV=dev \
             .
 
   # Job para ambiente QA (rama qa)
@@ -69,7 +68,6 @@ jobs:
         run: |
           gcloud builds submit \
             --config cloudbuild-qa.yaml \
-            --substitutions=_ENV=qa \
             .
 
   # Job para ambiente PROD (rama master)
@@ -97,5 +95,4 @@ jobs:
         run: |
           gcloud builds submit \
             --config cloudbuild-prod.yaml \
-            --substitutions=_ENV=prod \
             . 
