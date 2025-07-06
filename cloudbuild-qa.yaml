@@ -1,21 +1,23 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/streamlit-app:qa-$SHORT_SHA', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV', '.']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/streamlit-app:qa-$SHORT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       [
-        'run', 'deploy', 'streamlit-app-qa',
-        '--image', 'gcr.io/$PROJECT_ID/streamlit-app:qa-$SHORT_SHA',
+        'run', 'deploy', 'streamlit-app-$_ENV',
+        '--image', 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV',
         '--region', 'southamerica-east1',
         '--platform', 'managed',
         '--allow-unauthenticated',
         '--port', '8080',
         '--memory', '1Gi',
         '--cpu', '1',
-        '--max-instances', '3'
+        '--max-instances', '3',
+        '--health-checks', 'http:8080/healthz',
+        '--timeout', '300'
       ]
 images:
-  - 'gcr.io/$PROJECT_ID/streamlit-app:qa-$SHORT_SHA' 
+  - 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV' 

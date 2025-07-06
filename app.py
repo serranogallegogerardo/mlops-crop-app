@@ -1,10 +1,10 @@
 # This is a test comment to trigger the CI/CD pipeline (2025-07-02)
 import numpy as np
-from flask import Flask, request, jsonify, render_template, url_for
 import pickle
 from sklearn import svm
 import streamlit as st
 import os
+import time
 
 # Configuración básica de Streamlit para Cloud Run
 st.set_page_config(
@@ -18,15 +18,11 @@ MODEL_PATH = 'models/pickle_model.pkl'
 
 # Se recibe la imagen y el modelo, devuelve la predicción
 def model_prediction(x_in, model):
-
     x = np.asarray(x_in).reshape(1,-1)
     preds=model.predict(x)
-
     return preds
 
-
 def main():
-    
     model=''
 
     # Se carga el modelo
@@ -42,7 +38,6 @@ def main():
     st.markdown(html_temp,unsafe_allow_html=True)
 
     # Lecctura de datos
-    #Datos = st.text_input("Ingrese los valores : N P K Temp Hum pH lluvia:")
     N = st.text_input("Nitrógeno:")
     P = st.text_input("Fósforo:")
     K = st.text_input("Potasio:")
@@ -53,7 +48,6 @@ def main():
     
     # El botón predicción se usa para iniciar el procesamiento
     if st.button("Predicción :"): 
-        #x_in = list(np.float_((Datos.title().split('\t'))))
         x_in =[np.float_(N.title()),
                     np.float_(P.title()),
                     np.float_(K.title()),
@@ -63,18 +57,6 @@ def main():
                     np.float_(rain.title())]
         predictS = model_prediction(x_in, model)
         st.success('EL CULTIVO RECOMENDADO ES: {}'.format(predictS[0]).upper())
-
-# Health check endpoint for Cloud Run (Flask only, won't interfere with Streamlit)
-try:
-    app = Flask(__name__)
-    @app.route('/healthz')
-    def healthz():
-        return 'ok', 200
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!', 200
-except Exception:
-    pass
 
 if __name__ == '__main__':
     main()
