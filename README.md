@@ -58,7 +58,7 @@ This project includes a complete CI/CD pipeline with three environments:
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   develop   │───▶│     qa      │───▶│    master   │
+│   develop   │───▶│     qa      │───▶│    prod    │
 │   (DEV)     │    │    (QA)     │    │   (PROD)    │
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
@@ -99,9 +99,9 @@ git push origin qa
 
 ### 3. Production (PROD)
 ```bash
-git checkout master
+git checkout prod
 git merge qa
-git push origin master
+git push origin prod
 ```
 **✅ Automatically deploys to PROD**
 
@@ -158,9 +158,9 @@ git push --force origin [branch]
 ### Emergency Rollback
 ```bash
 # For critical issues in PROD
-git checkout master
+git checkout prod
 git reset --hard HEAD~1
-git push --force origin master
+git push --force origin prod
 ```
 
 ## 🚨 Troubleshooting

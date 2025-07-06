@@ -1,0 +1,38 @@
+/* Custom CSS to block external emoji loading and reduce spam */
+
+/* Block external emoji CDN requests */
+img[src*="twemoji.maxcdn.com"],
+img[src*="emoji-cdn"],
+img[src*="emoji.aranja.com"],
+img[src*="cdn.jsdelivr.net/emojione"],
+img[src*="emoji.codes"] {
+    display: none !important;
+}
+
+/* Hide Streamlit branding and menus */
+#MainMenu {visibility: hidden !important;}
+footer {visibility: hidden !important;}
+header {visibility: hidden !important;}
+
+/* Hide emoji elements */
+.stEmoji {
+    display: none !important;
+}
+
+/* Reduce console spam */
+.stApp > header {
+    background-color: transparent;
+}
+
+/* Hide debug elements */
+[data-testid="stSidebar"] {
+    display: none !important;
+}
+
+/* Clean up any external font loading */
+@import url('data:,');
+
+/* Block external requests in CSS */
+* {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+} 
