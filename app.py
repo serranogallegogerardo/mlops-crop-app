@@ -22,7 +22,17 @@ def model_prediction(x_in, model):
     preds=model.predict(x)
     return preds
 
+# Health check endpoint usando query parameters
+def check_health():
+    # Si hay un parámetro healthz, devolver respuesta simple
+    if st.experimental_get_query_params().get("healthz"):
+        st.write("ok")
+        st.stop()
+
 def main():
+    # Verificar health check primero
+    check_health()
+    
     model=''
 
     # Se carga el modelo

@@ -17,15 +17,4 @@ ENV STREAMLIT_SERVER_HEADLESS=true
 ENV STREAMLIT_SERVER_ENABLE_CORS=false
 ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
-# Hacer ejecutable el health check
-RUN chmod +x health_check.py
-
-# Script de inicio que ejecuta ambos servicios
-RUN echo '#!/bin/bash\n\
-echo "Starting health check server..."\n\
-python health_check.py &\n\
-echo "Starting Streamlit app..."\n\
-streamlit run app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true --server.enableCORS=false\n\
-' > start.sh && chmod +x start.sh
-
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["sh", "-c", "streamlit run app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true --server.enableCORS=false"]
