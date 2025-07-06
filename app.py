@@ -55,6 +55,55 @@ def check_health():
         st.write("ok")
         st.stop()
 
+# API endpoint for model prediction
+def api_mode(model):
+    params = st.experimental_get_query_params()
+    if "api" in params:
+        try:
+            # Get parameters from URL
+            N = float(params.get("n", [0])[0])
+            P = float(params.get("p", [0])[0])
+            K = float(params.get("k", [0])[0])
+            Temp = float(params.get("temp", [0])[0])
+            Hum = float(params.get("hum", [0])[0])
+            pH = float(params.get("ph", [0])[0])
+            rain = float(params.get("rain", [0])[0])
+            
+            # Validate input parameters
+            if any(val == 0 for val in [N, P, K, Temp, Hum, pH, rain]):
+                st.json({
+                    "error": "Missing or invalid parameters",
+                    "required_params": ["n", "p", "k", "temp", "hum", "ph", "rain"],
+                    "example": "?api=1&n=90&p=45&k=60&temp=20&hum=80&ph=6.5&rain=120"
+                })
+                st.stop()
+            
+            # Make prediction
+            x_in = [N, P, K, Temp, Hum, pH, rain]
+            prediction = model_prediction(x_in, model)[0]
+            
+            # Return JSON response
+            st.json({
+                "status": "success",
+                "recommended_crop": prediction.upper(),
+                "input_parameters": {
+                    "nitrogen": N,
+                    "phosphorus": P,
+                    "potassium": K,
+                    "temperature": Temp,
+                    "humidity": Hum,
+                    "ph": pH,
+                    "rainfall": rain
+                }
+            })
+        except Exception as e:
+            st.json({
+                "status": "error",
+                "error": str(e),
+                "message": "Invalid input parameters"
+            })
+        st.stop()
+
 def main():
     # Check health first
     check_health()
@@ -65,6 +114,9 @@ def main():
     if model == '':
         with open(MODEL_PATH, 'rb') as file:
             model = pickle.load(file)
+    
+    # Check for API mode
+    api_mode(model)
     
     # Title
     html_temp = """
