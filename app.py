@@ -4,11 +4,17 @@ from flask import Flask, request, jsonify, render_template, url_for
 import pickle
 from sklearn import svm
 import streamlit as st
+import os
 
+# Configuración básica de Streamlit para Cloud Run
+st.set_page_config(
+    page_title="Sistema de Recomendación de Cultivo",
+    page_icon="🌱",
+    layout="wide"
+)
 
 # Path del modelo preentrenado
 MODEL_PATH = 'models/pickle_model.pkl'
-
 
 # Se recibe la imagen y el modelo, devuelve la predicción
 def model_prediction(x_in, model):
