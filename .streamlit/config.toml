@@ -3,14 +3,27 @@ port = 8501
 address = "0.0.0.0"
 headless = true
 enableCORS = false
-enableXsrfProtection = true
+enableXsrfProtection = false
 maxUploadSize = 200
+enableStaticServing = true
+enableWebsocketCompression = false
+enableLogger = false
+enableDebugger = false
 
 [browser]
 gatherUsageStats = false
+serverAddress = "localhost"
+serverPort = 8501
+
+[logger]
+level = "error"
 
 [theme]
 primaryColor = "#181082"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
-textColor = "#262730" 
+textColor = "#262730"
+
+[client]
+showErrorDetails = false
+toolbarMode = "minimal" 

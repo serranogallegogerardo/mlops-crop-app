@@ -25,6 +25,22 @@ steps:
       - '--port'
       - '8080'
       - '--timeout'
-      - '300'
+      - '3600'
+
+  # Set IAM policy to allow public access
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'services'
+      - 'add-iam-policy-binding'
+      - 'streamlit-app-$_ENV'
+      - '--region'
+      - 'southamerica-east1'
+      - '--member'
+      - 'allUsers'
+      - '--role'
+      - 'roles/run.invoker'
+
 images:
   - 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV' 

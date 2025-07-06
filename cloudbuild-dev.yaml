@@ -1,7 +1,7 @@
 steps:
-  # Build the container image
+  # Build the container image using dev-specific Dockerfile
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV', '.']
+    args: ['build', '-f', 'Dockerfile.dev', '-t', 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV', '.']
   
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -30,7 +30,22 @@ steps:
       - '--port'
       - '8080'
       - '--timeout'
-      - '300'
+      - '3600'
+
+  # Set IAM policy to allow public access
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'services'
+      - 'add-iam-policy-binding'
+      - 'streamlit-app-$_ENV'
+      - '--region'
+      - 'southamerica-east1'
+      - '--member'
+      - 'allUsers'
+      - '--role'
+      - 'roles/run.invoker'
 
 images:
   - 'gcr.io/$PROJECT_ID/streamlit-app-$_ENV' 

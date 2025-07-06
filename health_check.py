@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Health check endpoint para Streamlit en Cloud Run
-Este archivo se ejecuta en paralelo con la aplicación principal
+Health check endpoint for Streamlit on Cloud Run
+This file runs in parallel with the main application
 """
 
 import os
@@ -15,20 +15,20 @@ from urllib.parse import urlparse
 class HealthCheckHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/healthz':
-            # Health check simple
+            # Simple health check
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
             self.wfile.write(b'ok')
         elif self.path == '/':
-            # Redirigir a Streamlit
+            # Redirect to Streamlit
             self.send_response(302)
             self.send_header('Location', '/')
             self.end_headers()
         else:
-            # Para otras rutas, intentar redirigir a Streamlit
+            # For other routes, try to redirect to Streamlit
             try:
-                # Verificar si Streamlit está respondiendo
+                # Check if Streamlit is responding
                 response = requests.get(f'http://localhost:8080{self.path}', timeout=5)
                 self.send_response(response.status_code)
                 for header, value in response.headers.items():
@@ -37,18 +37,18 @@ class HealthCheckHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(response.content)
             except:
-                # Si Streamlit no responde, devolver 404
+                # If Streamlit doesn't respond, return 404
                 self.send_response(404)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
                 self.wfile.write(b'Not Found')
     
     def log_message(self, format, *args):
-        # Silenciar logs del health check para evitar spam
+        # Silence health check logs to avoid spam
         pass
 
 def start_health_check_server():
-    """Iniciar servidor de health check en puerto 8080"""
+    """Start health check server on port 8080"""
     try:
         port = 8080
         server = HTTPServer(('0.0.0.0', port), HealthCheckHandler)
