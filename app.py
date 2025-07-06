@@ -1,4 +1,4 @@
-# This is a test comment to trigger the CI/CD pipeline (2025-07-02)
+# Crop Recommendation System - Streamlit App
 import numpy as np
 import pickle
 from sklearn import svm
@@ -6,57 +6,67 @@ import streamlit as st
 import os
 import time
 
-# Configuración básica de Streamlit para Cloud Run
+# Basic Streamlit configuration for Cloud Run
 st.set_page_config(
-    page_title="Sistema de Recomendación de Cultivo",
+    page_title="Crop Recommendation System",
     page_icon="🌱",
     layout="wide"
 )
 
-# Path del modelo preentrenado
+# Path to the pre-trained model
 MODEL_PATH = 'models/pickle_model.pkl'
 
-# Se recibe la imagen y el modelo, devuelve la predicción
+# Function to make predictions with the model
 def model_prediction(x_in, model):
     x = np.asarray(x_in).reshape(1,-1)
-    preds=model.predict(x)
+    preds = model.predict(x)
     return preds
 
-def main():
-    model=''
+# Health check endpoint using query parameters
+def check_health():
+    # If there's a healthz parameter, return simple response
+    if st.experimental_get_query_params().get("healthz"):
+        st.write("ok")
+        st.stop()
 
-    # Se carga el modelo
-    if model=='':
+def main():
+    # Check health first
+    check_health()
+    
+    model = ''
+
+    # Load the model
+    if model == '':
         with open(MODEL_PATH, 'rb') as file:
             model = pickle.load(file)
     
-    # Título
+    # Title
     html_temp = """
-    <h1 style="color:#181082;text-align:center;">SISTEMA DE RECOMENDACIÓN PARA CULTIVO </h1>
+    <h1 style="color:#181082;text-align:center;">CROP RECOMMENDATION SYSTEM</h1>
     </div>
     """
-    st.markdown(html_temp,unsafe_allow_html=True)
+    st.markdown(html_temp, unsafe_allow_html=True)
 
-    # Lecctura de datos
-    N = st.text_input("Nitrógeno:")
-    P = st.text_input("Fósforo:")
-    K = st.text_input("Potasio:")
-    Temp = st.text_input("Temperatura:")
-    Hum = st.text_input("Humedad:")
+    # Data input
+    N = st.text_input("Nitrogen:")
+    P = st.text_input("Phosphorus:")
+    K = st.text_input("Potassium:")
+    Temp = st.text_input("Temperature:")
+    Hum = st.text_input("Humidity:")
     pH = st.text_input("pH:")
-    rain = st.text_input("Lluvia:")
+    rain = st.text_input("Rainfall:")
     
-    # El botón predicción se usa para iniciar el procesamiento
-    if st.button("Predicción :"): 
-        x_in =[np.float_(N.title()),
-                    np.float_(P.title()),
-                    np.float_(K.title()),
-                    np.float_(Temp.title()),
-                    np.float_(Hum.title()),
-                    np.float_(pH.title()),
-                    np.float_(rain.title())]
+    # Prediction button to start processing
+    if st.button("Predict:"): 
+        x_in = [np.float_(N.title()),
+                np.float_(P.title()),
+                np.float_(K.title()),
+                np.float_(Temp.title()),
+                np.float_(Hum.title()),
+                np.float_(pH.title()),
+                np.float_(rain.title())]
         predictS = model_prediction(x_in, model)
-        st.success('EL CULTIVO RECOMENDADO ES: {}'.format(predictS[0]).upper())
+        st.success('RECOMMENDED CROP: {}'.format(predictS[0]).upper())
 
 if __name__ == '__main__':
     main()
