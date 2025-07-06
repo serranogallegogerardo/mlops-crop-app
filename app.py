@@ -12,8 +12,32 @@ import time
 st.set_page_config(
     page_title="Crop Recommendation System",
     page_icon="🌱",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
+
+# Load custom CSS to block external emoji loading and reduce spam
+def load_custom_css():
+    with open('assets/custom.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+# Load custom CSS
+load_custom_css()
+
+# Additional inline CSS for immediate effect
+st.markdown("""
+<style>
+    /* Block external emoji CDN requests immediately */
+    img[src*="twemoji.maxcdn.com"] { display: none !important; }
+    img[src*="emoji-cdn"] { display: none !important; }
+    .stEmoji { display: none !important; }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+</style>
+""", unsafe_allow_html=True)
 
 # Path to the pre-trained model
 MODEL_PATH = 'models/pickle_model.pkl'
