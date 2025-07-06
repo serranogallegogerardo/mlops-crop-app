@@ -4,7 +4,6 @@ address = "0.0.0.0"
 headless = true
 enableCORS = false
 enableXsrfProtection = true
-enableStaticServing = false
 maxUploadSize = 200
 
 [browser]
