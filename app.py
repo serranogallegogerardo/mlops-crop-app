@@ -1,3 +1,5 @@
+# This is a test comment to trigger the CI/CD pipeline (English)
+
 # Crop Recommendation System - Streamlit App
 import numpy as np
 import pickle
