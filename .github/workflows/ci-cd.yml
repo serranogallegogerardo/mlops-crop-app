@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - develop
+      - qa
+      - prod
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
